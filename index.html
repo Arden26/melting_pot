@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Melting Pot — Spices from Around the Globe</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2a1a12;--cream:#fbf5ec;--paper:#fffaf3;--saffron:#e0912b;--chili:#b8362a;--sage:#5b7a4a;--muted:#8a7565;--line:#ecdfcf}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+h1,h2,h3,.logo{font-family:Fraunces,Georgia,serif}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+header{position:sticky;top:0;z-index:20;background:rgba(251,245,236,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{max-width:1100px;margin:auto;display:flex;align-items:center;gap:18px;padding:12px 18px}
+.logo{font-size:22px;font-weight:800;display:flex;align-items:center;gap:8px}
+.logo span{color:var(--chili)}
+nav{display:flex;gap:4px;margin-left:auto}
+nav button{padding:8px 12px;border-radius:99px;font-weight:500;font-size:14px}
+nav button.on{background:var(--ink);color:var(--cream)}
+.cartbtn{position:relative;padding:8px 14px;border-radius:99px;background:var(--saffron);color:#fff;font-weight:600;font-size:14px}
+.cartbtn b{background:var(--ink);border-radius:99px;padding:1px 7px;margin-left:6px;font-size:12px}
+main{max-width:1100px;margin:auto;padding:0 18px 80px}
+.view{display:none}.view.on{display:block}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;padding:42px 0 30px}
+.hero h1{font-size:clamp(34px,5.5vw,58px);line-height:1.02;letter-spacing:-.02em}
+.hero h1 em{color:var(--chili);font-style:italic}
+.hero p{margin:16px 0 22px;color:var(--muted);font-size:17px;line-height:1.5;max-width:460px}
+.cta{display:inline-block;padding:13px 22px;border-radius:99px;background:var(--chili);color:#fff;font-weight:600}
+.cta.ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink);margin-left:8px}
+.globe{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f6c46b,#e0912b 45%,#b8362a 100%);position:relative;box-shadow:0 30px 60px -20px rgba(184,54,42,.45)}
+.globe i{position:absolute;font-style:normal;background:var(--paper);padding:6px 10px;border-radius:99px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.strip{display:flex;gap:10px;overflow-x:auto;padding:6px 0 18px}
+.chip{white-space:nowrap;padding:8px 14px;border-radius:99px;border:1.5px solid var(--line);background:var(--paper);font-size:14px;font-weight:500}
+.chip.on{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+h2{font-size:28px;margin:26px 0 6px}
+.sub{color:var(--muted);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s}
+.card:hover{transform:translateY(-3px)}
+.jar{height:150px;display:grid;place-items:center;position:relative}
+.jar .lid{width:74px;height:16px;border-radius:5px 5px 2px 2px;background:var(--ink);position:absolute;top:28px}
+.jar .body{width:92px;height:96px;border-radius:12px 12px 16px 16px;margin-top:22px;display:grid;place-items:center;box-shadow:inset -10px 0 0 rgba(0,0,0,.08)}
+.jar .lbl{background:var(--paper);width:72px;padding:6px 4px;border-radius:4px;text-align:center;font-family:Fraunces,serif;font-size:10px;font-weight:600;line-height:1.1}
+.flag{position:absolute;top:10px;left:10px;font-size:12px;font-weight:600;background:rgba(255,255,255,.85);padding:3px 8px;border-radius:99px}
+.info{padding:14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.info h3{font-size:17px}
+.info p{font-size:13px;color:var(--muted);line-height:1.4;flex:1}
+.row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.price{font-weight:600}
+.add{background:var(--ink);color:var(--cream);padding:7px 14px;border-radius:99px;font-size:13px;font-weight:600}
+.add.done{background:var(--sage)}
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.vid{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.thumb{aspect-ratio:9/12;position:relative;display:flex;align-items:flex-end;padding:14px;color:#fff}
+.thumb .play{position:absolute;inset:0;margin:auto;width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center}
+.thumb .play:after{content:"";border-left:18px solid var(--ink);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+.thumb .meta{position:relative;font-size:13px;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.thumb .meta b{display:block;font-family:Fraunces,serif;font-size:20px}
+.dish{position:absolute;top:22%;left:0;right:0;text-align:center;font-size:72px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.25))}
+.vfoot{padding:12px 14px}
+.vfoot .ing{font-size:12px;color:var(--muted);margin:6px 0 10px}
+.shop{width:100%;padding:10px;border-radius:12px;background:var(--saffron);color:#fff;font-weight:600;font-size:14px}
+.upload{margin-top:22px;border:2px dashed var(--line);border-radius:18px;padding:22px;text-align:center;background:var(--paper)}
+.upload b{font-family:Fraunces,serif;font-size:20px;display:block;margin-bottom:4px}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:10px}
+.tier{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px}
+.tier.hi{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.tier h3{font-size:22px}
+.tier .big{font-size:30px;font-family:Fraunces,serif;margin:10px 0}
+.tier ul{list-style:none;font-size:14px;line-height:1.9}
+.tier li:before{content:"✦ ";color:var(--saffron)}
+form{display:grid;gap:10px;max-width:520px;margin-top:20px}
+input,select{font:inherit;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:8px 0 10px}
+.how div{background:var(--paper);border-radius:16px;padding:16px;border:1px solid var(--line);font-size:14px;line-height:1.45}
+.how b{display:block;font-family:Fraunces,serif;font-size:17px;margin-bottom:4px}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(380px,100%);background:var(--paper);z-index:40;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column;box-shadow:-20px 0 40px rgba(0,0,0,.15)}
+.drawer.on{transform:none}
+.scrim{position:fixed;inset:0;background:rgba(42,26,18,.35);z-index:30;display:none}.scrim.on{display:block}
+.dh{padding:18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.dh h3{font-size:22px}
+.items{flex:1;overflow:auto;padding:10px 18px}
+.it{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.sw{width:42px;height:42px;border-radius:10px;flex:none}
+.it .n{flex:1;font-size:14px}.it .n small{display:block;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line)}
+.df{padding:18px;border-top:1px solid var(--line)}
+.df .row{margin:0 0 6px;font-size:14px}
+.ship{font-size:12px;color:var(--sage);margin-bottom:12px}
+.checkout{width:100%;padding:14px;border-radius:14px;background:var(--chili);color:#fff;font-weight:600}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,120px);background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:99px;font-size:14px;z-index:50;transition:transform .25s}
+.toast.on{transform:translate(-50%,0)}
+.proto{background:var(--ink);color:var(--cream);text-align:center;font-size:12px;padding:6px}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.globe{max-width:260px;margin:auto}nav button{padding:7px 9px;font-size:13px}.bar{flex-wrap:wrap;gap:8px}nav{order:3;margin:0;width:100%;overflow-x:auto}.cartbtn{margin-left:auto}}
+</style>
+</head>
+<body>
+<div class="proto">Concept prototype · all products, prices and creators are mock data</div>
+<header><div class="bar">
+  <div class="logo">🍲 Melting<span>Pot</span></div>
+  <nav>
+    <button data-v="shop" class="on">Shop</button>
+    <button data-v="recipes">Recipes</button>
+    <button data-v="wholesale">Wholesale</button>
+  </nav>
+  <button class="cartbtn" id="openCart">Cart<b id="count">0</b></button>
+</div></header>
+
+<main>
+<!-- SHOP -->
+<section class="view on" id="shop">
+  <div class="hero">
+    <div>
+      <h1>The world's pantry,<br><em>delivered</em> to your kitchen.</h1>
+      <p>Specialty herbs, spices and condiments from 30+ countries — for everyone who loves cooking the world's food at home.</p>
+      <button class="cta" onclick="document.getElementById('grid').scrollIntoView({behavior:'smooth'})">Shop the globe</button>
+      <button class="cta ghost" onclick="go('recipes')">Watch recipes</button>
+    </div>
+    <div class="globe">
+      <i style="top:14%;left:8%">🇹🇳 Harissa</i>
+      <i style="top:30%;right:2%">🇯🇵 Shichimi</i>
+      <i style="top:56%;left:0">🇲🇽 Ancho</i>
+      <i style="bottom:12%;right:12%">🇮🇳 Garam Masala</i>
+      <i style="top:2%;right:26%">🇮🇷 Saffron</i>
+    </div>
+  </div>
+  <div class="strip" id="regions"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- RECIPES -->
+<section class="view" id="recipes">
+  <h2>YouTube for recipes</h2>
+  <p class="sub">Creators cook. You watch. One tap puts every spice from the video in your cart.</p>
+  <div class="vids" id="vids"></div>
+  <div class="upload"><b>🎥 Share your recipe</b>Post a video, tag the Melting Pot ingredients you used, and earn 10% on every sale it drives.<br><br><button class="cta" onclick="toast('Creator upload — coming in v2')">Become a creator</button></div>
+</section>
+
+<!-- WHOLESALE -->
+<section class="view" id="wholesale">
+  <h2>For stores & restaurants</h2>
+  <p class="sub">Same global catalog, bulk sizes, drop-shipped direct from our partner suppliers.</p>
+  <div class="how">
+    <div><b>1 · Order</b>Pick bulk sizes from 200+ SKUs online.</div>
+    <div><b>2 · We route it</b>Your order goes straight to the regional supplier.</div>
+    <div><b>3 · Ships to you</b>Delivered direct — no warehouse, no middle markup.</div>
+  </div>
+  <div class="tiers">
+    <div class="tier"><h3>Convenience stores</h3><div class="big">20% off</div><ul><li>Branded retail jars + display rack</li><li>Mix-and-match cases of 12</li><li>Net-30 terms</li></ul></div>
+    <div class="tier hi"><h3>Restaurants</h3><div class="big">30% off</div><ul><li>1 lb & 5 lb kitchen bags</li><li>Standing monthly reorder</li><li>Dedicated account rep</li></ul></div>
+  </div>
+  <form onsubmit="event.preventDefault();this.reset();toast('Thanks! A rep will reach out within 24h (demo)')">
+    <input required placeholder="Business name">
+    <select required><option value="">Business type</option><option>Convenience store</option><option>Restaurant</option><option>Grocery / Market</option></select>
+    <input required type="email" placeholder="Email">
+    <button class="cta" type="submit">Request wholesale account</button>
+  </form>
+</section>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="dh"><h3>Your cart</h3><button id="closeCart" style="font-size:22px">✕</button></div>
+  <div class="items" id="items"></div>
+  <div class="df">
+    <div class="row"><span>Subtotal</span><b id="sub">$0.00</b></div>
+    <div class="ship" id="ship"></div>
+    <button class="checkout" onclick="checkout()">Checkout</button>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+const P=[
+ {id:'harissa',n:'Harissa Paste',o:'Tunisia',f:'🇹🇳',r:'Africa',p:9.5,c:'#b8362a',d:'Smoky roasted red chili, caraway & garlic.'},
+ {id:'berbere',n:'Berbere',o:'Ethiopia',f:'🇪🇹',r:'Africa',p:8,c:'#a3452b',d:'Warm, fiery blend for stews and lentils.'},
+ {id:'rasel',n:'Ras el Hanout',o:'Morocco',f:'🇲🇦',r:'Africa',p:10,c:'#c47a35',d:'The "head of the shop" — 20+ spice blend.'},
+ {id:'garam',n:'Garam Masala',o:'India',f:'🇮🇳',r:'Asia',p:7.5,c:'#7a4a2a',d:'Toasted cardamom, clove, cinnamon & pepper.'},
+ {id:'gochu',n:'Gochugaru',o:'Korea',f:'🇰🇷',r:'Asia',p:9,c:'#d0452f',d:'Sun-dried chili flakes for kimchi & stews.'},
+ {id:'shichimi',n:'Shichimi Togarashi',o:'Japan',f:'🇯🇵',r:'Asia',p:8.5,c:'#c9572e',d:'Seven-spice blend with orange peel & sesame.'},
+ {id:'sichuan',n:'Sichuan Peppercorn',o:'China',f:'🇨🇳',r:'Asia',p:11,c:'#6e2f22',d:'Citrusy, tingly, unforgettable.'},
+ {id:'saffron',n:'Saffron Threads',o:'Iran',f:'🇮🇷',r:'Middle East',p:24,c:'#d9631e',d:'Grade-1 sargol saffron, 1 g.'},
+ {id:'sumac',n:"Sumac",o:'Lebanon',f:'🇱🇧',r:'Middle East',p:7,c:'#8e2a36',d:'Tart, lemony crimson berry.'},
+ {id:'zaatar',n:"Za'atar",o:'Palestine',f:'🇵🇸',r:'Middle East',p:8,c:'#6f7a3e',d:'Wild thyme, sumac & toasted sesame.'},
+ {id:'ancho',n:'Ancho Chile',o:'Mexico',f:'🇲🇽',r:'Americas',p:7.5,c:'#5a2a22',d:'Dried poblano — sweet, raisiny heat.'},
+ {id:'jerk',n:'Jerk Seasoning',o:'Jamaica',f:'🇯🇲',r:'Americas',p:8,c:'#4f6b2f',d:'Allspice, scotch bonnet & thyme.'},
+ {id:'aji',n:'Ají Amarillo Paste',o:'Peru',f:'🇵🇪',r:'Americas',p:9.5,c:'#e6a52a',d:'Bright, fruity yellow chili.'},
+ {id:'herbes',n:'Herbes de Provence',o:'France',f:'🇫🇷',r:'Europe',p:7,c:'#7d8f5a',d:'Thyme, savory, rosemary & lavender.'},
+ {id:'paprika',n:'Smoked Paprika',o:'Spain',f:'🇪🇸',r:'Europe',p:6.5,c:'#b5402a',d:'Oak-smoked pimentón de la Vera.'},
+];
+const V=[
+ {t:'Shakshuka',by:'@tunis.kitchen',e:'🍳',g:'linear-gradient(160deg,#e0912b,#b8362a)',v:'214K',items:['harissa','zaatar','paprika']},
+ {t:'Butter Chicken',by:'@masala.mom',e:'🍛',g:'linear-gradient(160deg,#d9631e,#7a4a2a)',v:'1.2M',items:['garam','saffron']},
+ {t:'Mapo Tofu',by:'@numbing.spicy',e:'🌶️',g:'linear-gradient(160deg,#c9572e,#6e2f22)',v:'486K',items:['sichuan','gochu']},
+ {t:'Moroccan Tagine',by:'@atlas.eats',e:'🥘',g:'linear-gradient(160deg,#c47a35,#5b3a22)',v:'302K',items:['rasel','saffron','harissa']},
+ {t:'Jerk Chicken',by:'@island.grill',e:'🍗',g:'linear-gradient(160deg,#5b7a4a,#2a3a1f)',v:'655K',items:['jerk']},
+ {t:'Chicken Mole Tacos',by:'@abuela.cdmx',e:'🌮',g:'linear-gradient(160deg,#8a3a22,#3a1a12)',v:'97K',items:['ancho','paprika']},
+];
+const $=s=>document.querySelector(s), byId=id=>P.find(p=>p.id===id);
+let cart={}, region='All';
+const regions=['All','Africa','Asia','Middle East','Americas','Europe'];
+
+function jar(p){return `<div class="jar" style="background:${p.c}22"><span class="flag">${p.f} ${p.o}</span><div class="lid"></div><div class="body" style="background:${p.c}"><div class="lbl">${p.n}</div></div></div>`}
+function renderShop(){
+  $('#regions').innerHTML=regions.map(r=>`<button class="chip ${r===region?'on':''}" onclick="region='${r}';renderShop()">${r}</button>`).join('');
+  $('#grid').innerHTML=P.filter(p=>region==='All'||p.r===region).map(p=>`<div class="card">${jar(p)}<div class="info"><h3>${p.n}</h3><p>${p.d}</p><div class="row"><span class="price">$${p.p.toFixed(2)}</span><button class="add ${cart[p.id]?'done':''}" onclick="add('${p.id}')">${cart[p.id]?'✓ In cart':'Add'}</button></div></div></div>`).join('');
+}
+function renderVids(){
+  $('#vids').innerHTML=V.map((v,i)=>{const tot=v.items.reduce((s,id)=>s+byId(id).p,0);return `<div class="vid"><div class="thumb" style="background:${v.g}" onclick="toast('▶ Playing ${v.t} (demo)')"><div class="dish">${v.e}</div><div class="play"></div><div class="meta"><b>${v.t}</b>${v.by} · ${v.v} views</div></div><div class="vfoot"><div class="ing">Uses: ${v.items.map(id=>byId(id).f+' '+byId(id).n).join(' · ')}</div><button class="shop" onclick="shopRecipe(${i})">🛒 Shop this recipe — $${tot.toFixed(2)}</button></div></div>`}).join('');
+}
+function add(id,silent){cart[id]=(cart[id]||0)+1;update();if(!silent)toast(byId(id).n+' added')}
+function shopRecipe(i){V[i].items.forEach(id=>add(id,true));toast(V[i].items.length+' ingredients for '+V[i].t+' added');openCart()}
+function qty(id,d){cart[id]+=d;if(cart[id]<=0)delete cart[id];update()}
+function update(){
+  const ids=Object.keys(cart), n=ids.reduce((s,id)=>s+cart[id],0), sub=ids.reduce((s,id)=>s+cart[id]*byId(id).p,0);
+  $('#count').textContent=n;
+  $('#items').innerHTML=ids.length?ids.map(id=>{const p=byId(id);return `<div class="it"><div class="sw" style="background:${p.c}"></div><div class="n">${p.n}<small>${p.f} ${p.o} · $${p.p.toFixed(2)}</small></div><div class="qty"><button onclick="qty('${id}',-1)">−</button>${cart[id]}<button onclick="qty('${id}',1)">+</button></div></div>`}).join(''):'<p style="color:var(--muted);padding:30px 0;text-align:center">Your pot is empty. Go explore!</p>';
+  $('#sub').textContent='$'+sub.toFixed(2);
+  $('#ship').textContent=sub>=35?'✓ Free shipping unlocked — ships direct from suppliers':`Add $${(35-sub).toFixed(2)} more for free shipping`;
+  renderShop();
+}
+function openCart(){$('#drawer').classList.add('on');$('#scrim').classList.add('on')}
+function closeCart(){$('#drawer').classList.remove('on');$('#scrim').classList.remove('on')}
+function checkout(){if(!Object.keys(cart).length)return toast('Cart is empty');cart={};update();closeCart();toast('Order placed! (demo) Routed to 3 suppliers 🚚')}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200)}
+function go(v){document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id===v));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.v));
+$('#openCart').onclick=openCart;$('#closeCart').onclick=closeCart;$('#scrim').onclick=closeCart;
+renderVids();update();
+</script>
+</body>
+</html>
